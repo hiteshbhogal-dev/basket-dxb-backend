@@ -156,17 +156,21 @@ async def price_movers():
     }
 
 
-@app.post("/api/scrape/trigger")
-async def trigger_scrape(keywords: list = None):
-    # Ignore Swagger default "string"
-    if keywords == ["string"] or keywords == "string":
-        keywords = None
+from scheduler.run_scraper import run_full_scrape
 
-    asyncio.create_task(run_full_scrape(keywords))
-    return {
-        "status": "scrape triggered",
-        "message": "Running in background"
-    }
+@app.post("/api/scrape/trigger")
+async def trigger_scrape():
+    try:
+        results = await run_full_scrape()
+        return {
+            "status": "completed",
+            "items_scraped": len(results)
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e)
+        }
 
 
 @app.get("/api/scrape/status", tags=["admin"])
