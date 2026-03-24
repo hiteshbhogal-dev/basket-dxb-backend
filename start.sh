@@ -6,5 +6,5 @@ pip install -r requirements.txt
 echo "Installing Playwright..."
 playwright install chromium
 
-echo "Starting app..."
-python main.py
+echo "Starting FastAPI server..."
+uvicorn api.server:app --host 0.0.0.0 --port $PORT
