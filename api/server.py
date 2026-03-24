@@ -156,15 +156,17 @@ async def price_movers():
     }
 
 
-@app.post("/api/scrape/trigger", tags=["admin"])
-async def trigger_scrape(background_tasks: BackgroundTasks, keywords: Optional[list[str]] = None):
-    """
-    Manually trigger a scrape run (runs in background).
-    Requires the scraper to be installed in the same environment.
-    """
-    from scheduler.run_scraper import run_full_scrape
-    background_tasks.add_task(run_full_scrape, keywords)
-    return {"status": "scrape triggered", "message": "Running in background. Check /api/scrape/status for progress."}
+@app.post("/api/scrape/trigger")
+async def trigger_scrape(keywords: list = None):
+    # Ignore Swagger default "string"
+    if keywords == ["string"] or keywords == "string":
+        keywords = None
+
+    asyncio.create_task(run_full_scrape(keywords))
+    return {
+        "status": "scrape triggered",
+        "message": "Running in background"
+    }
 
 
 @app.get("/api/scrape/status", tags=["admin"])
