@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: basket-dxb-api
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt && playwright install chromium"
+    startCommand: "bash start.sh"
