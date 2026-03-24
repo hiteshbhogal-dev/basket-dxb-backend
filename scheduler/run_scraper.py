@@ -25,7 +25,7 @@ async def run_full_scrape(keywords: list = None):
     Full scrape run: scrape all stores → save to DB → log result.
     Called by the scheduler every morning and optionally via the API.
     """
-    keywords = keywords or ALL_KEYWORDS
+    keywords = keywords or ["milk", "eggs"]
     logger.info(f"[Scheduler] Starting scrape run — {len(keywords)} keywords, {date.today()}")
     start = time.time()
 
