@@ -5,3 +5,6 @@ services:
     plan: free
     buildCommand: "pip install -r requirements.txt && playwright install chromium"
     startCommand: "bash start.sh"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
